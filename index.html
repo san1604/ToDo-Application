@@ -1,21 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO App</title>
     <script>
         console.log("Hello TODO APP")
-        function addTODO()
-        {
-            console.log("Add todo!")
-            // document.getElementById("input")
+        let todoList = []
+        let count = 0
+        
+        function addTODO() {
+            const inputValue = document.getElementById("addToDoinput").value
+            if (!inputValue) {
+                alert("todo can not be blank at all")
+            }
+            else {
+                todoList.push({
+                    todoTitle: inputValue,
+                    todoDescription: "",
+                    todoDueDate: "",
+                    todoPriority: "",
+                    todoID: ++count,
+                    todoCompletionStatus: false,
+                    todoStatus: "Todo",
+                    todoCreationDate: "",
+                    todoUpdationDate: ""
+                })
+                console.log("TodoList: ", todoList)
+                document.getElementById("addToDoinput").value = ""
+                listAllTodos()
+            }
         }
+
+        function listAllTodos() {
+            let list = document.getElementById("todoListHtml")
+            list.innerHTML = ""
+            for (let i = 0; i < todoList.length; i++) {
+                list.innerHTML = list.innerHTML + "<li><input type='checkbox'> " + todoList[i].todoTitle + "</li>"
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const ShowAlertDailog = document.getElementById("addToDoID")
+            const addToDoBtn = document.getElementById("addToDoBtn")
+            addToDoBtn.addEventListener('click', () => {
+                ShowAlertDailog.showModal()
+            })
+        })
     </script>
 </head>
+
 <body>
     <h1>ToDo App</h1>
-    <input id="input" placeholder="Enter todo title here..."><br>
-    <button onclick="addTODO()">Add TODO</button>
+    <button id="addToDoBtn">Add TODO</button>
+    <dialog id="addToDoID">
+        <h2>Add ToDo</h2>
+        <form id="todoDataForm" onsubmit="return false;">
+            <label>ToDo Title</label><br>
+            <input type="text" placeholder="Enter ToDo Title ...." id="addToDoinput"><br>
+            <label>ToDo Description</label><br>
+            <input type="text" placeholder="Enter ToDo Description ...." id="addToDoDescription"><br>
+            <label>ToDo Due Date</label><br>
+            <input type="text" placeholder="Enter ToDo Due Date ...." id="addToDoDueDAte"><br>
+            <button type="button" onclick="addTODO(); document.getElementById('addToDoID').close();">Add ToDo</button>
+            <button type="button" onclick="document.getElementById('addToDoID').close();">Cancel</button><br>
+        </form>
+    </dialog>
+    <ul id="todoListHtml" style="list-style-type: none;">
+        <label id="notodoLabel">No todos are added yet</label>
+    </ul>
 </body>
+
 </html>
